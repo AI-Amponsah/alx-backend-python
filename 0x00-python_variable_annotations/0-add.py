@@ -1,4 +1,4 @@
-#!/usr/bin/env python35
+#!/usr/bin/env python3
 """ function to add and return a float"""
 
 
