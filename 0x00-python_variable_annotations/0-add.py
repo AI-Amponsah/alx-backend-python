@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-""" function to add and return a float"""
+"""This module defines a function 'add'"""
 
 
-def add(a: float, b: float)->float:
-    """adds two floats, returns the sum"""
-    return a+b
+def add(a: float, b: float) -> float:
+    """Adds two floats, returns the sum"""
+    return a + b
