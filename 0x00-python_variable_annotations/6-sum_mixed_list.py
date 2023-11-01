@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
-"""annotated function, takes floats as argument, returns sum as float"""
+'''Module for task 6.
+'''
 from typing import List, Union
 
 
 def sum_mixed_list(mxd_lst: List[Union[int, float]]) -> float:
-    """returns sum as float"""
-    return sum(mxd_lst)
+    '''Computes the sum of a list of integers and floating-point numbers.
+    '''
+    return float(sum(mxd_lst))

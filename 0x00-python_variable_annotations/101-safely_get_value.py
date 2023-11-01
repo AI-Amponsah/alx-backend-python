@@ -1,16 +1,15 @@
 #!/usr/bin/env python3
-"""Defines a function called `safely_get_value`"""
-from typing import TypeVar, Mapping, Any, Union, Optional
+'''Module for Task 11.
+'''
+from typing import Any, Mapping, Union, TypeVar
+
 
 T = TypeVar('T')
+Res = Union[Any, T]
+Def = Union[T, None]
 
 
-def safely_get_value(dct: Mapping, key: Any,
-                     default: Union[T, None] = None) -> Union[Any, T]:
-    """Safely retrieves a value from a dictionary or returns the default value
-    if the key is not present
-    """
-    if key in dct:
-        return dct[key]
-    else:
-        return default
+def safely_get_value(dct: Mapping, key: Any, default: Def = None) -> Res:
+    '''Returns the value with the given key in the dictionary
+    '''
+    return dct.get(key, default)

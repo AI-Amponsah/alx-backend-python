@@ -1,71 +1,64 @@
 #!/usr/bin/env python3
-"""
-This module contains a python unit test for utils
-"""
-import requests
+""" test utils.py """
 import unittest
 from parameterized import parameterized
-from unittest.mock import patch
 from utils import access_nested_map, get_json, memoize
+from unittest.mock import patch
 
 
 class TestAccessNestedMap(unittest.TestCase):
-    """
-    this class is for testing access_nested_map method/function
-    """
+    """ unittests for nested map function """
+
     @parameterized.expand([
         ({"a": 1}, ("a",), 1),
         ({"a": {"b": 2}}, ("a",), {"b": 2}),
         ({"a": {"b": 2}}, ("a", "b"), 2)
     ])
-    def test_access_nested_map(self, nested_map, path, result):
-        """
-        this method test the access_nested_map function
-        """
-        self.assertEqual(access_nested_map(nested_map, path), result)
+    def test_access_nested_map(self, nested_map, path, expected_value):
+        """ unittest for the function """
+        self.assertEqual(access_nested_map(nested_map, path), expected_value)
 
     @parameterized.expand([
-        ({}, ("a",)),
-        ({"a": 1}, ("a", "b"))
+        ({}, ('a',), KeyError('a')),
+        ({"a": 1}, ("a", "b"), KeyError('b'))
     ])
-    def test_access_nested_map_exception(self, nested_map, path):
-        """
-        this method tests wrong/invalid inputs that raise Exception
-        """
-        with self.assertRaises(Exception) as ex:
-            access_nested_map(nested_map, path)
+    def test_access_nested_map_exception(
+            self, nested_map, path, expected_value):
+        """ Unittest for exception in a nested map function """
+        with self.assertRaises(KeyError) as error:
+            access_nested_map(nested_map=nested_map, path=path)
+
+        self.assertEqual(repr(error.exception), repr(expected_value))
 
 
 class TestGetJson(unittest.TestCase):
-    """
-    This is test class for get_json() function
-    """
+    """ Test the response of json function """
     @parameterized.expand([
         ("http://example.com", {"payload": True}),
         ("http://holberton.io", {"payload": False})
     ])
-    def test_get_json(self, url, payload):
-        """this function test the get_json() method"""
-        with patch('requests.get') as mock_req:
-            mock_req.return_value.json.return_value = payload
-            self.assertEqual(get_json(url), payload)
+    def test_get_json(self, test_url: str, test_payload: dict):
+        """	unittest for correct execution """
+        with patch('requests.get') as mock_request:
+            mock_request.return_value.json.return_value = test_payload
+            self.assertEqual(get_json(url=test_url), test_payload)
 
 
 class TestMemoize(unittest.TestCase):
-    """Test class for memoize function"""
+    """ Test the memoize decorator """
     def test_memoize(self):
-        """function to test memoize method"""
+        """	Test the memoize decorator that save the return of the function
+        that use it.
+        """
         class TestClass:
-
             def a_method(self):
                 return 42
 
             @memoize
             def a_property(self):
                 return self.a_method()
-
-        with patch.object(TestClass, 'a_method') as mock:
-            test = TestClass()
-            test.a_property()
-            test.a_property()
-            mock.assert_called_once()
+        with patch.object(TestClass, 'a_method') as mock_memo:
+            test_class = TestClass()
+            test_class.a_property()
+            test_class.a_property()
+            mock_memo.assert_called_once()

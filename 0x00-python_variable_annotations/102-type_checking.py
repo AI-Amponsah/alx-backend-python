@@ -1,28 +1,18 @@
 #!/usr/bin/env python3
-"""This module defines a function `safe_first_element`"""
+'''Task 12's module.
+'''
 from typing import List, Tuple
 
 
 def zoom_array(lst: Tuple, factor: int = 2) -> List:
-    """
-    Zooms (repeats) the items in the tuple 'lst' by the specified 'factor'.
-
-    Args:
-        lst (Tuple): The input tuple containing elements.
-        factor (int): Determines how many times each item will be repeated.
-
-    Returns:
-        Tuple: The new tuple containing zoomed elements based on the factor.
-    """
-    zoomed_in: List = [
-        item for item in lst
-        for i in range(factor)
-    ]
-    return zoomed_in
+    '''Expands a tuple by duplicating each element multiple times.
+    '''
+    zoomed_lst: List = [item for item in lst for _ in range(factor)]
+    return zoomed_lst
 
 
 array = (12, 72, 91)
 
 zoom_2x = zoom_array(array)
 
-zoom_3x = zoom_array(array, 3)
+zoom_3x = zoom_array(array, factor=3)
